@@ -1,0 +1,38 @@
+{
+  "name": "music",
+  "version": "1.0.0",
+  "description": "'music player'",
+  "main": "main.js",
+  "scripts": {
+    "dev": "gulp default --gulpfile build/gulpfile.js"
+  },
+  "author": "chenhch8",
+  "license": "ISC",
+  "devDependencies": {
+    "ajax": "^0.0.4",
+    "autoprefixer": "^7.1.2",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "css-loader": "^0.28.4",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-cache": "^0.4.6",
+    "gulp-clean": "^0.3.2",
+    "gulp-concat": "^2.6.1",
+    "loader-utils": "^1.1.0",
+    "node-sass": "^4.5.3",
+    "opn": "^5.1.0",
+    "postcss-loader": "^2.0.6",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "vue": "^2.4.2",
+    "vue-loader": "^12.2.2",
+    "vue-router": "^2.7.0",
+    "vue-style-loader": "^3.0.1",
+    "vue-template-compiler": "^2.4.2",
+    "webpack": "^3.3.0",
+    "webpack-dev-server": "^2.6.1"
+  }
+}
