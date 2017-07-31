@@ -7,43 +7,81 @@ module.exports = {
         app: ['../src/main.js']
     },
     output: {
-        publicPath: '/release/',
+        publicPath: './',
         path: __dirname + '/../release/',
-        filename: '[name].bundle.js'
+        filename: 'js/[name].bundle.js'
     },
     module: {
         rules: [{
-            test: /\.js$/,
-            include: [__dirname + '/../src/'],
-            use: 'babel-loader'
-        }, {
-            test: /\.(scss|css)$/,
-            use: ExtractTextPlugin.extract({
-                fallback: 'style-loader',
-                // 处理顺序 从右到左
-                // ?importLoaders=1 表示 引入嵌入的 css文件也会按照postcss这样自动添加前缀
-                // use: ['css-loader', 'postcss-loader', 'sass-loader']
-                use: ['css-loader', 'sass-loader']
-            })
-        }, {
-            test: /\.vue$/,
-            use: 'vue-loader'
-        }, ]
+                test: /\.(js)$/,
+                include: [__dirname + '/../src'],
+                loader: 'babel-loader'
+            }, {
+                test: /\.(scss|css)$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    // 处理顺序 从右到左
+                    use: ['css-loader?sourceMap=true', {
+                            loader: 'postcss-loader',
+                            options: {
+                                config: { path: './postcss.config.js' },
+                                sourceMap: true
+                            }
+                        },
+                        'sass-loader?sourceMap=true'
+                    ]
+                })
+            }, {
+                test: /\.vue$/,
+                loader: 'vue-loader',
+                options: {
+                    loaders: {
+                        css: ExtractTextPlugin.extract({
+                            use: 'css-loader',
+                            fallback: 'vue-style-loader' // <- this is a dep of vue-loader, so no need to explicitly install if using npm3
+                        }),
+                        scss: ExtractTextPlugin.extract({
+                            use: ['css-loader?sourceMap=true', {
+                                    loader: 'postcss-loader',
+                                    options: {
+                                        config: { path: './postcss.config.js' },
+                                        sourceMap: true
+                                    }
+                                },
+                                'sass-loader?sourceMap=true'
+                            ],
+                            fallback: 'vue-style-loader'
+                        })
+                    }
+                }
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                use: 'url-loader?limit=8192&name=images/[hash:8].[name].[ext]'
+            }
+        ]
     },
     externals: {
         'vue': 'Vue',
         'vue-router': 'VueRouter'
     },
     resolve: {
-        extensions: ['.js', '.jsx', '.scss', '.vue'],
+        extensions: ['.js', '.es6', '.scss', '.vue'],
         alias: {
-
+            '@': __dirname + '/../src'
         }
     },
     plugins: [
         // new webpack.optimize.UglifyJsPlugin({ minimize: true }), //压缩和丑化
         new ExtractTextPlugin("css/styles.css"),
-        //这个不添加allChunks参数的话，不会抽离chunk的css
-        // new ExtractTextPlugin({ filename: 'css/[name].[hash:5].css', allChunks: true })
-    ]
+        new webpack.DefinePlugin({
+            // 'process.env': {
+            //     NODE_ENV: 'production'
+            // }
+        }),
+        // new BabiliPlugin({}, {
+        //     comments: false,
+        //     sourceMap: true
+        // })
+    ],
 }

@@ -4,7 +4,8 @@
   "description": "'music player'",
   "main": "main.js",
   "scripts": {
-    "dev": "gulp default --gulpfile build/gulpfile.js"
+    "dev": "gulp default --gulpfile build/gulpfile.js",
+    "build": "gulp webpack-build --gulpfile build/gulpfile.js"
   },
   "author": "chenhch8",
   "license": "ISC",
